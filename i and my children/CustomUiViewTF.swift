@@ -11,6 +11,7 @@ import UIKit
 final class CustomUiViewTF: UIView {
     let upLabel = UILabel()
     let inputTF = UITextField()
+    weak var delegate: CustomCellDelegate?
 
     private enum UiSettings {
         static let marginLeft: CGFloat = 16
@@ -44,6 +45,7 @@ final class CustomUiViewTF: UIView {
         upLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(inputTF)
         inputTF.translatesAutoresizingMaskIntoConstraints = false
+        inputTF.delegate = self
     }
 
     private func setupLayout() {
@@ -62,4 +64,10 @@ final class CustomUiViewTF: UIView {
         
     }
 
+}
+
+extension CustomUiViewTF: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print("hello")
+    }
 }
