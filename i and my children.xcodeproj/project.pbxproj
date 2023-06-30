@@ -67,9 +67,6 @@
 				A50D8FFB2A4B40DE007D237A /* Models */,
 				A50D8FE32A4A0DE8007D237A /* AppDelegate.swift */,
 				A50D8FE52A4A0DE8007D237A /* SceneDelegate.swift */,
-				A50D8FE72A4A0DE8007D237A /* MainSceneViewController.swift */,
-				A50D8FF72A4A2CBD007D237A /* CustomPersonView.swift */,
-				A50D8FF92A4AFD6A007D237A /* CustomUiViewTF.swift */,
 				A50D8FEC2A4A0DEA007D237A /* Assets.xcassets */,
 				A50D8FEE2A4A0DEA007D237A /* LaunchScreen.storyboard */,
 				A50D8FF12A4A0DEA007D237A /* Info.plist */,
@@ -89,6 +86,8 @@
 			isa = PBXGroup;
 			children = (
 				A50D8FFE2A4CE41B007D237A /* CustomTableViewCell.swift */,
+				A50D8FF72A4A2CBD007D237A /* CustomPersonView.swift */,
+				A50D8FF92A4AFD6A007D237A /* CustomUiViewTF.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -96,6 +95,7 @@
 		A50D8FFD2A4B40ED007D237A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A50D8FE72A4A0DE8007D237A /* MainSceneViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

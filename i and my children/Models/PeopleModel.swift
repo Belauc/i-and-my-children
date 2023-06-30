@@ -7,11 +7,12 @@
 
 import Foundation
 
-class peopleModel {
+struct PeopleModel {
+    let id = UUID()
     var name: String?
-    var age: Int?
+    var age: String?
 
-    init(name: String, age: Int) {
+    init(name: String, age: String) {
         self.name = name
         self.age = age
     }
@@ -20,4 +21,8 @@ class peopleModel {
         self.name = nil
         self.age = nil
     }
+}
+
+enum TypeProperty {
+    case name, age
 }

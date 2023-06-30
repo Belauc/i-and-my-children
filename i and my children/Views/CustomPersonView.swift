@@ -10,16 +10,10 @@ import UIKit
 //MARK: - CustomTextField
 final class CustomPersonView: UIStackView {
 
-    let personNameTF = CustomUiViewTF()
-    let personAgeTF = CustomUiViewTF()
+    private let personNameTF = CustomUiViewTF(typeProperty: .name, model: PeopleModel())
+    private let personAgeTF = CustomUiViewTF(typeProperty: .age, model: PeopleModel())
     private enum UiSettings {
-        static let marginLeft: CGFloat = 16
-        static let marginTop: CGFloat = 10
-        static let marginRight: CGFloat = -16
-        static let marginBottom: CGFloat = -10
-        static let cornerRadius: CGFloat = 10
-        static let borderWidth: CGFloat = 2.0
-        static let borderColor: CGColor = UIColor.systemGray6.cgColor
+        static let spacingStackView: CGFloat = 10.0
     }
 
     //MARK: - Initializers
@@ -42,22 +36,24 @@ final class CustomPersonView: UIStackView {
     private func setupSubViews() {
         addArrangedSubview(personNameTF)
         personNameTF.translatesAutoresizingMaskIntoConstraints = false
-        personNameTF.upLabel.text = "Имя"
         addArrangedSubview(personAgeTF)
         personAgeTF.translatesAutoresizingMaskIntoConstraints = false
-        personAgeTF.upLabel.text = "Возраст"
     }
 
     private func setupLayout() {
         personNameTF.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         personNameTF.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        //personNameTF.topAnchor.constraint(equalTo: topAnchor).isActive = true
 
         personAgeTF.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         personAgeTF.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
 
-        spacing = 10
+        spacing = UiSettings.spacingStackView
         axis = .vertical
 
+    }
+
+    func configure(model: PeopleModel, delegate: CustomCellDelegate?) {
+        personNameTF.configure(model: model, delegate: delegate)
+        personAgeTF.configure(model: model, delegate: delegate)
     }
 }

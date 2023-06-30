@@ -13,7 +13,14 @@ final class CustomTableViewCell: UITableViewCell {
     private let infoStackView = CustomPersonView()
     private let deleteButton = UIButton()
     weak var delegate: CustomCellDelegate?
-    var people: peopleModel?
+    private enum UiSettings {
+        static let marginLeft: CGFloat = 16
+        static let marginTop: CGFloat = 10
+        static let marginBottom: CGFloat = -16
+        static let textDeleteButton: String = "Удалить"
+        static let buttonColor: UIColor = UIColor.systemBlue
+        static let spacingStackView: CGFloat = 10.0
+    }
 
     //MARK: - Intilazers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -26,11 +33,8 @@ final class CustomTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(people: peopleModel, delegate: CustomCellDelegate) {
-        self.people = people
-        self.infoStackView.personAgeTF.delegate = delegate
-        self.infoStackView.personNameTF.delegate = delegate
-        //MARK: - Дописать внесение данных в инпуты и тд
+    func configure(people: PeopleModel, delegate: CustomCellDelegate) {
+        self.infoStackView.configure(model: people, delegate: delegate)
     }
 
     @objc
@@ -59,20 +63,20 @@ private extension CustomTableViewCell {
 private extension CustomTableViewCell {
     private func setupLayout() {
         infoStackView.translatesAutoresizingMaskIntoConstraints = false
-        infoStackView.widthAnchor.constraint(equalToConstant: contentView.frame.width / 2 + 15).isActive = true
+        infoStackView.widthAnchor.constraint(equalToConstant: contentView.frame.width / 2 + UiSettings.marginLeft).isActive = true
         infoStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        infoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15).isActive = true
-        infoStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15).isActive = true
+        infoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: UiSettings.marginBottom).isActive = true
+        infoStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: UiSettings.marginTop).isActive = true
 
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.leftAnchor.constraint(equalTo: infoStackView.rightAnchor, constant: 15).isActive = true
+        deleteButton.leftAnchor.constraint(equalTo: infoStackView.rightAnchor, constant: UiSettings.marginLeft).isActive = true
         deleteButton.topAnchor.constraint(
             equalTo: contentView.topAnchor,
-            constant: contentView.frame.height / 3 + 15
+            constant: contentView.frame.height / 3 + UiSettings.marginTop
         ).isActive = true
 
-        deleteButton.setTitle("Удалить", for: .normal)
-        deleteButton.setTitleColor(.systemBlue, for: .normal)
+        deleteButton.setTitle(UiSettings.textDeleteButton, for: .normal)
+        deleteButton.setTitleColor(UiSettings.buttonColor, for: .normal)
         deleteButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         selectionStyle = .none
     }
