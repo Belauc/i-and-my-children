@@ -73,7 +73,9 @@ final class CustomUiViewTF: UIView {
 
     func configure(model: PeopleModel, delegate: CustomCellDelegate?) {
         self.model = model
-        self.delegate = delegate
+        if let delegate {
+            self.delegate = delegate
+        }
         switch typeProperty {
         case .age:
             upLabel.text = UiSettings.textForAge

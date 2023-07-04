@@ -73,7 +73,6 @@ final class MainSceneViewController: UIViewController {
     @objc
     private func deleteAllChildsAction() {
         showAlertDeleteAllChilds()
-        childTableView.reloadData()
     }
 
     //MARK: - Alet for delete all childs
@@ -88,6 +87,8 @@ final class MainSceneViewController: UIViewController {
 
     private func deleteAllChilds(alert: UIAlertAction) {
         childs.removeAll()
+        childrenParent = PeopleModel()
+        customPV.configure(model: childrenParent, delegate: nil)
         childTableView.reloadData()
         clearButton.isHidden = true
     }
