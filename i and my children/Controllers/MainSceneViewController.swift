@@ -45,6 +45,7 @@ final class MainSceneViewController: UIViewController {
         static let messageAlertCheck: String = "Все внесенные данные удаляться"
         static let titleAlertAcceptButton: String = "Сбросить данные"
         static let titleAlertCancelButton: String = "Отмена"
+        static let personalLabelText: String = "Персональные данные"
     }
     private enum TypeButton {
         case add, clear
@@ -58,8 +59,13 @@ final class MainSceneViewController: UIViewController {
     @objc
     private func addNewChild() {
         childs.append(PeopleModel())
-        if childs.count == UiSettings.maximumChilds {
-            addChildButton.isHidden = true
+        switch childs.count {
+            case UiSettings.maximumChilds:
+                addChildButton.isHidden = true
+            case 0...:
+                clearButton.isHidden = false
+            default:
+                return
         }
         childTableView.reloadData()
     }
@@ -83,13 +89,13 @@ final class MainSceneViewController: UIViewController {
     private func deleteAllChilds(alert: UIAlertAction) {
         childs.removeAll()
         childTableView.reloadData()
+        clearButton.isHidden = true
     }
 }
 
 //MARK: - Setting Views
 private extension MainSceneViewController {
     func setupView() {
-        view.backgroundColor = UiSettings.backgraundColor
         addSubViews()
         setupLayout()
     }
@@ -112,17 +118,19 @@ private extension MainSceneViewController {
 //MARK: - Layout
 private extension MainSceneViewController {
     func setupLayout() {
+        view.backgroundColor = UiSettings.backgraundColor
+
         personalLabel.translatesAutoresizingMaskIntoConstraints = false
         personalLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: UiSettings.marginLeft).isActive = true
         personalLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: UiSettings.marginRight).isActive = true
         personalLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UiSettings.marginTop).isActive = true
-        personalLabel.text = "Персональные данные"
+        personalLabel.text = UiSettings.personalLabelText
 
         customPV.translatesAutoresizingMaskIntoConstraints = false
         customPV.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: UiSettings.marginLeft).isActive = true
         customPV.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: UiSettings.marginRight).isActive = true
         customPV.topAnchor.constraint(equalTo: personalLabel.bottomAnchor, constant: UiSettings.marginTop).isActive = true
-        customPV.configure(model: childrenParent, delegate: nil)
+        customPV.configure(model: childrenParent, delegate: self)
 
         middleStackView.translatesAutoresizingMaskIntoConstraints = false
         middleStackView.axis = .horizontal
@@ -152,6 +160,7 @@ private extension MainSceneViewController {
             constant: UiSettings.marginBottom
         ).isActive = true
         clearButton.addTarget(self, action: #selector(deleteAllChildsAction), for: .touchUpInside)
+        clearButton.isHidden = true
 
         childTableView.translatesAutoresizingMaskIntoConstraints = false
         childTableView.topAnchor.constraint(equalTo: middleStackView.bottomAnchor, constant: UiSettings.marginTop).isActive = true
@@ -160,8 +169,6 @@ private extension MainSceneViewController {
         childTableView.bottomAnchor.constraint(equalTo: clearButton.topAnchor, constant: UiSettings.marginBottom).isActive = true
         childTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.identificator)
         childTableView.dataSource = self
-
-
     }
 
     //MARK: - Setup Custom Config Button
@@ -182,18 +189,26 @@ private extension MainSceneViewController {
 
 //MARK: - Delegate CellTableView
 extension MainSceneViewController: CustomCellDelegate {
-    func changePeopleInfo(for child: PeopleModel) {
-        guard let index = childs.firstIndex(where: { $0.id == child.id }) else { return }
-        childs[index] = child
-        childTableView.reloadData()
+    func changePeopleInfo(for people: PeopleModel) {
+        if let index = childs.firstIndex(where: { $0.id == people.id }) {
+            childs[index] = people
+            childTableView.reloadData()
+        } else if childrenParent.id == people.id {
+            childrenParent = people
+        }
     }
 
     func deleteChild(_ cell: CustomTableViewCell) {
         guard let indexPath = childTableView.indexPath(for: cell) else { return }
         childs.remove(at: indexPath.row)
         childTableView.reloadData()
-        if childs.count < UiSettings.maximumChilds {
-            addChildButton.isHidden = false
+        switch childs.count {
+            case 1..<UiSettings.maximumChilds:
+                addChildButton.isHidden = false
+            case 0:
+                clearButton.isHidden = true
+            default:
+                return
         }
     }
 }
