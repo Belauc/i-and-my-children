@@ -61,6 +61,7 @@ final class CustomUiViewTF: UIView {
         upLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: UiSettings.marginLeft).isActive = true
         upLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: UiSettings.marginRight).isActive = true
         upLabel.topAnchor.constraint(equalTo: topAnchor, constant: UiSettings.marginTop).isActive = true
+        upLabel.textColor = UIColor.systemGray
 
         inputTF.leftAnchor.constraint(equalTo: leftAnchor, constant: UiSettings.marginLeft).isActive = true
         inputTF.rightAnchor.constraint(equalTo: rightAnchor, constant: UiSettings.marginRight).isActive = true
